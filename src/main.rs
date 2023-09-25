@@ -18,7 +18,7 @@ impl<T: Ord> Node<T> {
         }
     }
 
-    pub fn insert(mut root: &mut Option<Box<Node<T>>>, key: T) {
+    pub fn insert(mut root: &mut Option<Box<Node<T>>>, key: T) -> Result<(), ()>{
         while let Some(ref mut node) = root{
             match key.cmp(&node.key) {
                 Ordering::Equal => root = &mut node.left,
@@ -26,7 +26,9 @@ impl<T: Ord> Node<T> {
                 Ordering::Greater => root = &mut node.right,
             }
         }
-        *root = Some(Box::new(Node::new(key)))
+        *root = Some(Box::new(Node::new(key)));
+
+        Ok(())
     }
 
 }
@@ -36,5 +38,5 @@ fn main() {
     println!("{:?}", node);
 
 
-    println!("{:?}", Node::insert(&mut Some(Box::new(node)), 20));
+    println!("{:?}", Node::insert(&mut Some(Box::new(node)), 9));
 }
