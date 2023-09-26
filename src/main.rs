@@ -1,38 +1,32 @@
-use std::cmp::Ordering;
 use std::fmt::Debug;
 
 #[derive(Debug)]
-pub struct Node<T: Ord>
+pub struct Node<V> where V: Ord + Debug + Copy
 {
-    key: T,
-    left: Option<Box<Node<T>>>,
-    right: Option<Box<Node<T>>>
+    value: Option<V>,
+    left: Option<Box<Node<V>>>,
+    right: Option<Box<Node<V>>>,
 }
 
-impl<T: Ord> Node<T> {
-    pub fn new(key: T) -> Node<T> {
-        Node {
-            key,
-            left: None,
-            right: None,
-        }
-    }
 
-    pub fn i_insert(mut root: &mut Option<Box<Node<T>>>, key: T) -> Result<(), ()>{
-        while let Some(ref mut node) = root{
-            match key.cmp(&node.key) {
-                Ordering::Equal => root = &mut node.left,
-                Ordering::Less => root = &mut node.left,
-                Ordering::Greater => root = &mut node.right,
-            }
-        }
-        *root = Some(Box::new(Node::new(key)));
-
-        Ok(())
+pub fn new() -> Node<V> {
+    Node {
+        value: None,
+        left: None,
+        right: None,
     }
 }
+
+pub fn new_from(value: V) -> Node<V> {
+    Node {
+        value: Some(value),
+        left: None,
+        right: None,
+    }
+}
+
 
 fn main() {
-    let mut node = Node::new(());
-    println!("{:?}", node);
+    let mut node = Node::new();
+    println!("{:?}", node)
 }
